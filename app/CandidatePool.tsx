@@ -145,7 +145,7 @@ export function CandidatePool() {
     <main id="top" className="candidate-page">
       <header className="topbar candidate-topbar">
         <a className="brand" href="/candidates"><span className="brand-mark">A</span><span>ARENA / CANDIDATE ROOM</span></a>
-        <div className="topbar-meta"><a className="pool-link" href="/">8-PLAYER CLIP ROOM ↗</a><span>INTERNAL</span><span>30 RANKED + 2 REVIEW</span></div>
+        <div className="topbar-meta"><a className="pool-link" href="/preferred-eight">PREFERRED 8 ↗</a><a className="pool-link" href="/">CLIP ROOM ↗</a><span>30 RANKED + 2 REVIEW</span></div>
       </header>
 
       <section className="candidate-hero">

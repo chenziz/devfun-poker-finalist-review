@@ -6,6 +6,8 @@ import data from "./data/finalist-highlights.json";
 type Highlight = (typeof data.players)[number]["highlights"][number];
 
 const clipKey = (player: string, replayId: string) => `${player}::${replayId}`;
+const REVIEWED_STORAGE_KEY = "finalist-highlight-reviewed-v2";
+const SHORTLIST_STORAGE_KEY = "finalist-highlight-shortlist-v2";
 
 function fmt(value: number, digits = 0) {
   return new Intl.NumberFormat("en-US", { maximumFractionDigits: digits }).format(value);
@@ -28,8 +30,8 @@ export function FinalistHighlights() {
   const [copyStatus, setCopyStatus] = useState("COPY SHORTLIST");
 
   useEffect(() => {
-    setReviewed(new Set(JSON.parse(localStorage.getItem("finalist-highlight-reviewed") || "[]")));
-    setShortlisted(new Set(JSON.parse(localStorage.getItem("finalist-highlight-shortlist") || "[]")));
+    setReviewed(new Set(JSON.parse(localStorage.getItem(REVIEWED_STORAGE_KEY) || "[]")));
+    setShortlisted(new Set(JSON.parse(localStorage.getItem(SHORTLIST_STORAGE_KEY) || "[]")));
   }, []);
 
   const toggle = (kind: "reviewed" | "shortlisted", id: string) => {
@@ -38,10 +40,10 @@ export function FinalistHighlights() {
     if (next.has(id)) next.delete(id); else next.add(id);
     if (kind === "reviewed") {
       setReviewed(next);
-      localStorage.setItem("finalist-highlight-reviewed", JSON.stringify([...next]));
+      localStorage.setItem(REVIEWED_STORAGE_KEY, JSON.stringify([...next]));
     } else {
       setShortlisted(next);
-      localStorage.setItem("finalist-highlight-shortlist", JSON.stringify([...next]));
+      localStorage.setItem(SHORTLIST_STORAGE_KEY, JSON.stringify([...next]));
     }
   };
 
@@ -115,7 +117,7 @@ export function FinalistHighlights() {
                 <span className="highlight-player-order">{String(player.order).padStart(2, "0")}</span>
                 <img src={player.profile.avatar} alt="" />
                 <div className="highlight-player-name"><span>{player.source}</span><h2>{player.name}</h2><a href={`https://x.com/${player.profile.handle}`} target="_blank" rel="noreferrer">@{player.profile.handle} ↗</a></div>
-                <div className="highlight-style"><span>STYLE POSITIONING</span><strong>{player.style.title}</strong>{player.name === "AlphaHorizon" && <b className="highlight-format-badge">6-MAX SAMPLE · NOT DIRECTLY COMPARABLE TO HU</b>}<p>{player.style.summary}</p></div>
+                <div className="highlight-style"><span>STYLE POSITIONING</span><strong>{player.style.title}</strong>{player.sourceName === "AlphaHorizon" && <b className="highlight-format-badge">6-MAX SAMPLE · NOT DIRECTLY COMPARABLE TO HU</b>}<p>{player.style.summary}</p></div>
                 <div className="highlight-player-progress"><strong>{playerReviewed} / {player.highlights.length}</strong><span>visible clips reviewed</span></div>
               </header>
 

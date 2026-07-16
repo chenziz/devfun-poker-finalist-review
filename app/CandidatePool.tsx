@@ -177,6 +177,14 @@ export function CandidatePool() {
         <span className="visible-count">{visible.length} visible</span>
       </section>
 
+      <aside className="candidate-stat-key" aria-label="How to read candidate statistics">
+        <strong>HOW TO READ THE NUMBERS</strong>
+        <span><b>RANK</b> place among agents</span>
+        <span><b>SCORE</b> platform HU performance metric</span>
+        <span><b>HANDS</b> size of the observed sample</span>
+        <span><b>20K+</b> a fully eligible completed run</span>
+      </aside>
+
       <section className="candidate-grid" aria-label="Candidate comparison">
         {visible.map((candidate) => {
           const picked = shortlistSet.has(candidate.handle);
@@ -196,29 +204,29 @@ export function CandidatePool() {
               <div className="candidate-style"><span>OBSERVED STYLE</span><strong>{candidate.style}</strong><small>{candidate.bio || "No public profile bio"}</small></div>
 
               <div className="candidate-metrics">
-                <div><span>Screening order</span><strong>{candidate.tier === "Locked" ? "LOCK" : `#${candidate.selectionRank}`}</strong><small>{candidate.selectionScore ? `${fmt(candidate.selectionScore, 1)} history-aware` : "special entrant"}</small></div>
-                <div><span>Historical peak</span><strong>{candidate.historicalPeakScore === null || candidate.historicalPeakScore === undefined ? "—" : fmt(candidate.historicalPeakScore, 1)}</strong><small>{candidate.platformBestRank ? `platform best #${candidate.platformBestRank}` : "no HU history"} · max run {fmt(candidate.historicalMaxRunHands)}</small></div>
-                <div><span>Current HU</span><strong>{candidate.huRank ? `#${candidate.huRank}` : "—"}</strong><small>{fmt(candidate.huTrueSkill, 1)} score · {fmt(candidate.huScoredHands)} hands</small></div>
-                <div><span>Jul 15 snapshot</span><strong>{candidate.previousHuRank ? `#${candidate.previousHuRank}` : "—"}</strong><small>{rankMovement ? `${rankMovement > 0 ? "▼" : "▲"}${Math.abs(rankMovement)} ranks vs current` : "no comparable snapshot"}</small></div>
-                <div><span>Tournament</span><strong>{candidate.tournamentSeasons} seasons</strong><small>{candidate.tournamentSeasons ? `latest #${candidate.tournamentLatestRank} · best #${candidate.tournamentBestRank} · avg top ${fmt((1 - candidate.tournamentAvgPercentile) * 100, 0)}%` : "no history"}</small></div>
-                <div><span>Observed versions</span><strong>≥{fmt(candidate.versionCount)}</strong><small>{fmt(candidate.eligible20kRuns)} seen at 20K+ · {fmt(candidate.huHistoricalHands)} platform HU hands</small></div>
+                <div><span>Our screening rank</span><strong>{candidate.tier === "Locked" ? "LOCK" : `#${candidate.selectionRank}`}</strong><small>{candidate.selectionScore ? `Score ${fmt(candidate.selectionScore, 1)} · history-aware` : "Special entrant"}</small></div>
+                <div><span>Best observed HU score</span><strong>{candidate.historicalPeakScore === null || candidate.historicalPeakScore === undefined ? "—" : fmt(candidate.historicalPeakScore, 1)}</strong><small>{candidate.platformBestRank ? `Best platform rank #${candidate.platformBestRank}` : "No HU history"} · longest run {fmt(candidate.historicalMaxRunHands)} hands</small></div>
+                <div><span>Current leaderboard rank</span><strong>{candidate.huRank ? `#${candidate.huRank}` : "—"}</strong><small>Score {fmt(candidate.huTrueSkill, 1)} across {fmt(candidate.huScoredHands)} hands</small></div>
+                <div><span>Rank on Jul 15</span><strong>{candidate.previousHuRank ? `#${candidate.previousHuRank}` : "—"}</strong><small>{rankMovement ? `${rankMovement > 0 ? "Down" : "Up"} ${Math.abs(rankMovement)} places since snapshot` : "No comparable snapshot"}</small></div>
+                <div><span>Tournament history</span><strong>{candidate.tournamentSeasons} seasons</strong><small>{candidate.tournamentSeasons ? `Best finish #${candidate.tournamentBestRank} · latest #${candidate.tournamentLatestRank}` : "No Tournament history"}</small></div>
+                <div><span>Observed HU history</span><strong>{fmt(candidate.versionCount)} versions</strong><small>{fmt(candidate.huHistoricalHands)} total hands · {fmt(candidate.eligible20kRuns)} completed 20K+</small></div>
               </div>
 
               <div className="candidate-evidence">
                 <div className="account-evidence history-evidence">
-                  <span>HISTORY SIGNAL</span>
+                  <span>CURRENT VS HISTORY</span>
                   <strong className={(candidate.scoreRegression ?? 0) < -25 ? "negative" : "positive"}>{candidate.scoreRegression === null || candidate.scoreRegression === undefined ? "No HU comparison" : `${signed(candidate.scoreRegression, 1)} current vs peak`}</strong>
                   <p>{candidate.rankRegression && candidate.rankRegression > 20 ? `Current-only ranking understates this agent by ${candidate.rankRegression} places versus its best observed rank.` : "Current and historical evidence are broadly aligned, or the history sample is limited."}</p>
                   <small>{candidate.positiveRunRate === null || candidate.positiveRunRate === undefined ? "run consistency unavailable" : `${fmt(candidate.positiveRunRate * 100, 0)}% positive observed runs`} · peak {fmt(candidate.historicalPeakScore, 1)}</small>
                 </div>
                 <div className="ops-evidence">
-                  <span>OPS / CONTENT</span>
+                  <span>RELIABILITY SAMPLE</span>
                   <strong>{candidate.medianDecisionSec ? `${fmt(candidate.medianDecisionSec, 2)}s sampled median` : "No HU timing sample"}</strong>
                   <p>{candidate.sampledTimeoutRate === null || candidate.sampledTimeoutRate === undefined ? "No comparable HU timeout spot-check" : `timeout spot-check: ${fmt(candidate.sampledTimeoutRate * candidate.sampledActions, 0)}/${candidate.sampledActions} sampled actions`}</p>
                   <small>{fmt(candidate.clipCandidateCount)} automated clip signals · {fmt(candidate.analyzedHandCount)} hands analyzed</small>
                 </div>
                 <div className="account-evidence">
-                  <span>PUBLIC X FOOTPRINT</span>
+                  <span>PUBLIC ACCOUNT CHECK</span>
                   <strong className={riskClass(candidate.identityRisk)}>{candidate.identityRisk} alt signal</strong>
                   <p>{candidate.identityNote}</p>
                   <small>{candidate.followers === null || candidate.followers === undefined ? "followers unavailable" : `${fmt(candidate.followers)} followers`} · {candidate.posts === null || candidate.posts === undefined ? "posts unavailable" : `${fmt(candidate.posts)} posts`}</small>
@@ -227,7 +235,7 @@ export function CandidatePool() {
 
               <details className="candidate-details">
                 <summary>Observed runs & poker profile</summary>
-                <div><span>VPIP<strong>{candidate.vpip === null || candidate.vpip === undefined ? "—" : `${fmt(candidate.vpip * 100, 1)}%`}</strong></span><span>PFR<strong>{candidate.pfr === null || candidate.pfr === undefined ? "—" : `${fmt(candidate.pfr * 100, 1)}%`}</strong></span><span>AF<strong>{fmt(candidate.aggressionFactor, 2)}</strong></span><span>3-BET<strong>{candidate.threeBetPct === null || candidate.threeBetPct === undefined ? "—" : `${fmt(candidate.threeBetPct * 100, 1)}%`}</strong></span><span>WSD<strong>{candidate.showdownWinPct === null || candidate.showdownWinPct === undefined ? "—" : `${fmt(candidate.showdownWinPct * 100, 1)}%`}</strong></span><span>Recent 1k<strong>{signed(candidate.recent1000Bb100)}</strong></span></div>
+                <div><span>Hands played (VPIP)<strong>{candidate.vpip === null || candidate.vpip === undefined ? "—" : `${fmt(candidate.vpip * 100, 1)}%`}</strong></span><span>Raises preflop (PFR)<strong>{candidate.pfr === null || candidate.pfr === undefined ? "—" : `${fmt(candidate.pfr * 100, 1)}%`}</strong></span><span>Aggression factor<strong>{fmt(candidate.aggressionFactor, 2)}</strong></span><span>Re-raises (3-bet)<strong>{candidate.threeBetPct === null || candidate.threeBetPct === undefined ? "—" : `${fmt(candidate.threeBetPct * 100, 1)}%`}</strong></span><span>Showdown win rate<strong>{candidate.showdownWinPct === null || candidate.showdownWinPct === undefined ? "—" : `${fmt(candidate.showdownWinPct * 100, 1)}%`}</strong></span><span>Recent 1K (bb/100)<strong>{signed(candidate.recent1000Bb100)}</strong></span></div>
                 {candidate.observedRuns && candidate.observedRuns.length > 0 ? <div className="run-history">{candidate.observedRuns.map((run, index) => <span key={`${run.source}-${index}`}><small>{run.source}</small><strong>{fmt(run.score, 1)}</strong><em>{fmt(run.hands)} hands · {run.eligible20k ? "20K+" : "provisional"}</em></span>)}</div> : null}
               </details>
 

@@ -54,11 +54,11 @@ export function PreferredEight() {
               </div>
 
               <div className="preferred-metrics">
-                <div><span>Screening</span><strong>{candidate.selectionRank ? `#${candidate.selectionRank}` : "LOCK"}</strong><small>{candidate.selectionScore ? `${fmt(candidate.selectionScore, 1)} history-aware` : "Tournament entrant"}</small></div>
-                <div><span>Current HU</span><strong>{candidate.huRank ? `#${candidate.huRank}` : "—"}</strong><small>peak {fmt(candidate.historicalPeakScore, 1)}</small></div>
-                <div><span>Tournament</span><strong>{candidate.tournamentSeasons} seasons</strong><small>best #{fmt(candidate.tournamentBestRank)} · latest #{fmt(candidate.tournamentLatestRank)}</small></div>
-                <div><span>Content signal</span><strong>{candidate.contentGrade}</strong><small>{fmt(candidate.clipCandidateCount)} automated signals</small></div>
-                <div><span>X footprint</span><strong className={`preferred-risk preferred-risk-${candidate.identityRisk.toLowerCase()}`}>{candidate.identityRisk}</strong><small>builder linkage unverified</small></div>
+                <div><span>Our screening rank</span><strong>{candidate.selectionRank ? `#${candidate.selectionRank}` : "LOCK"}</strong><small>{candidate.selectionScore ? `Score ${fmt(candidate.selectionScore, 1)}` : "Tournament entrant"}</small></div>
+                <div><span>Current HU rank</span><strong>{candidate.huRank ? `#${candidate.huRank}` : "—"}</strong><small>Best observed score {fmt(candidate.historicalPeakScore, 1)}</small></div>
+                <div><span>Tournament record</span><strong>{candidate.tournamentSeasons} seasons</strong><small>Best finish #{fmt(candidate.tournamentBestRank)} · latest #{fmt(candidate.tournamentLatestRank)}</small></div>
+                <div><span>Clip availability</span><strong>{candidate.contentGrade}</strong><small>{fmt(candidate.clipCandidateCount)} automated hand signals</small></div>
+                <div><span>Public account risk</span><strong className={`preferred-risk preferred-risk-${candidate.identityRisk.toLowerCase()}`}>{candidate.identityRisk}</strong><small>Builder linkage still unverified</small></div>
               </div>
 
               <div className="preferred-clips">

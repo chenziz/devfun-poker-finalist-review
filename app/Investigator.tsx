@@ -29,6 +29,11 @@ type Profile = {
   metrics: string;
   sample: string;
   accent: string;
+  accountCreated: string;
+  xStats: string;
+  lastActivity: string;
+  altLikelihood: "Low" | "Medium" | "High";
+  accountSignals: string[];
 };
 
 const profiles: Profile[] = [
@@ -44,6 +49,11 @@ const profiles: Profile[] = [
     metrics: "44.1 / 34.0 / 3.92 / 11.6 / 64.7",
     sample: "Heads-Up Ladder",
     accent: "#d9ff59",
+    accountCreated: "Creation date unavailable",
+    xStats: "261 followers · 604 following · 1,340 posts",
+    lastActivity: "Active Jul 2026",
+    altLikelihood: "Low",
+    accountSignals: ["Substantial post history", "Recent original technical discussion", "Public identity appears consistent"],
   },
   {
     key: "TheAAI / AlphaHorizon",
@@ -57,6 +67,11 @@ const profiles: Profile[] = [
     metrics: "34.3 / 28.3 / 3.66 / 13.9 / 55.0",
     sample: "Tournament S5",
     accent: "#8cc8ff",
+    accountCreated: "Joined May 2010",
+    xStats: "2 followers · 2 following · 3 posts",
+    lastActivity: "No recent posts found",
+    altLikelihood: "High",
+    accountSignals: ["Extremely sparse account", "No bio or recent activity", "Old creation date but little organic history"],
   },
   {
     key: "Antge Poker Bot",
@@ -70,6 +85,11 @@ const profiles: Profile[] = [
     metrics: "68.1 / 32.5 / 1.34 / 6.6 / 53.1",
     sample: "Heads-Up Ladder",
     accent: "#ff916e",
+    accountCreated: "Creation date unavailable",
+    xStats: "3,095 followers · 1,212 following · 12,940 posts",
+    lastActivity: "Active Jul 2026",
+    altLikelihood: "Low",
+    accountSignals: ["Large established history", "Very recent ongoing activity", "Profile and ecosystem identity are consistent"],
   },
   {
     key: "Grinder",
@@ -83,6 +103,11 @@ const profiles: Profile[] = [
     metrics: "83.8 / 53.2 / 2.30 / 25.5 / 46.1",
     sample: "Heads-Up Ladder",
     accent: "#ffce73",
+    accountCreated: "Joined Jun 2012",
+    xStats: "142 followers · 58 following · 2,739 posts",
+    lastActivity: "Posted to @devfun Jul 2026",
+    altLikelihood: "Medium",
+    accountSignals: ["Long-lived account", "Current profile appears recently repurposed", "Only two retrievable timeline posts; manual check recommended"],
   },
   {
     key: "Junglist Soldier",
@@ -96,6 +121,11 @@ const profiles: Profile[] = [
     metrics: "58.7 / 23.3 / 1.08 / 10.4 / 60.6",
     sample: "Heads-Up Ladder",
     accent: "#b99aff",
+    accountCreated: "Joined Apr 2022",
+    xStats: "147 followers · 1,936 following · 1,066 posts",
+    lastActivity: "Active Jul 2026",
+    altLikelihood: "Low",
+    accountSignals: ["Multi-year organic activity", "Recent poker-agent research posts", "Name and technical interests are coherent"],
   },
   {
     key: "dein Joni",
@@ -109,6 +139,11 @@ const profiles: Profile[] = [
     metrics: "79.3 / 65.1 / 3.69 / 15.4 / 50.3",
     sample: "Heads-Up Ladder",
     accent: "#f394db",
+    accountCreated: "Joined Sep 2020",
+    xStats: "175 followers · 683 following · 552 posts",
+    lastActivity: "Active Mar 2026",
+    altLikelihood: "Low",
+    accountSignals: ["Multi-year posting history", "Organic crypto and location trail", "Agent name closely matches the handle"],
   },
   {
     key: "Night Owl",
@@ -121,6 +156,11 @@ const profiles: Profile[] = [
     metrics: "57.9 / 38.9 / 1.74 / 5.7 / 62.4",
     sample: "Heads-Up Ladder",
     accent: "#70e7d1",
+    accountCreated: "Joined Jun 2026",
+    xStats: "Followers hidden/unavailable · 16 following",
+    lastActivity: "No public posts found",
+    altLikelihood: "High",
+    accountSignals: ["Account is about one month old", "No public timeline history found", "Builder-to-agent linkage needs direct confirmation"],
   },
   {
     key: "Whale Alert",
@@ -133,12 +173,21 @@ const profiles: Profile[] = [
     metrics: "92.9 / 21.6 / 0.50 / 14.4 / 56.7",
     sample: "Heads-Up Ladder",
     accent: "#65c6ff",
+    accountCreated: "Joined Feb 2026",
+    xStats: "Followers hidden/unavailable · 2 following · 1 post",
+    lastActivity: "No recent posts found",
+    altLikelihood: "High",
+    accountSignals: ["Very new and extremely sparse", "No bio or public activity trail", "Builder-to-agent linkage needs direct confirmation"],
   },
 ];
 
 const allClips = clipsData as Clip[];
 const usageOptions = ["All", "Primary", "Secondary", "Quick cut", "Research"];
 const suits: Record<string, string> = { h: "♥", d: "♦", c: "♣", s: "♠" };
+
+function altClass(value: Profile["altLikelihood"]) {
+  return `alt-${value.toLowerCase()}`;
+}
 
 function isRedCard(card: string) {
   return /[hd]$/i.test(card);
@@ -224,7 +273,7 @@ export function Investigator() {
             }}
             style={{ "--accent": profile.accent } as React.CSSProperties}
           >
-            <span className="profile-index">0{index + 1}</span>
+            <span className="profile-topline"><span className={`alt-badge ${altClass(profile.altLikelihood)}`}>{profile.altLikelihood} alt signal</span><span className="profile-index">0{index + 1}</span></span>
             <img src={profile.avatar} alt={`${profile.displayName} profile`} />
             <span className="profile-copy">
               <span className="agent-name">{profile.agent}</span>
@@ -280,6 +329,12 @@ export function Investigator() {
                 </div>
                 <div className="player-note"><span>STYLE READ</span><strong>{profile.style}</strong><p>{profile.bio}</p></div>
                 <div className="metrics"><span>VPIP / PFR / AF / 3B / WSD</span><strong>{profile.metrics}</strong><small>{profile.sample}{profile.followers !== undefined ? ` · ${profile.followers.toLocaleString()} X followers` : ""}</small></div>
+                <div className="account-check">
+                  <div className="account-check-title"><span>X ACCOUNT CHECK</span><strong className={altClass(profile.altLikelihood)}>{profile.altLikelihood} alt likelihood</strong></div>
+                  <p>{profile.accountCreated} · {profile.xStats} · {profile.lastActivity}</p>
+                  <ul>{profile.accountSignals.map((signal) => <li key={signal}>{signal}</li>)}</ul>
+                  <small>Heuristic only — verify identity directly before final confirmation.</small>
+                </div>
               </div>
 
               <div className="clip-grid">

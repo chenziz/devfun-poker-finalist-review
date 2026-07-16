@@ -244,6 +244,7 @@ export function Investigator() {
           <span>ARENA / CLIP ROOM</span>
         </a>
         <div className="topbar-meta">
+          <a className="pool-link" href="/candidates">30-PLAYER POOL ↗</a>
           <span>INTERNAL</span>
           <span>8 AGENTS</span>
           <span>80 HANDS</span>

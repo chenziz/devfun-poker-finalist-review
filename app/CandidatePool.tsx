@@ -6,6 +6,7 @@ import candidateData from "./data/candidates.json";
 type Candidate = {
   selectionRank: number;
   tier: string;
+  businessLock?: boolean;
   name: string;
   handle: string;
   displayName: string;
@@ -23,6 +24,25 @@ type Candidate = {
   huTrueSkill?: number | null;
   huScoredHands: number;
   huHistoricalHands: number;
+  analyzedHandCount?: number | null;
+  historicalPeakScore?: number | null;
+  historicalMaxRunHands?: number | null;
+  platformBestRank?: number | null;
+  versionCount?: number | null;
+  eligible20kRuns?: number | null;
+  positiveRunRate?: number | null;
+  rankRegression?: number | null;
+  scoreRegression?: number | null;
+  observedRuns?: Array<{
+    source: string;
+    score?: number | null;
+    hands: number;
+    createdAt?: string | null;
+    status: string;
+    submissionId?: string | null;
+    eligible20k: boolean;
+  }>;
+  scoreComponents?: Record<string, number>;
   realizedBb100?: number | null;
   recent1000Bb100?: number | null;
   previous1000Bb100?: number | null;
@@ -39,11 +59,11 @@ type Candidate = {
   contentGrade: string;
   clipCandidateCount: number;
   style: string;
-  vpip: number;
-  pfr: number;
-  aggressionFactor: number;
-  threeBetPct: number;
-  showdownWinPct: number;
+  vpip?: number | null;
+  pfr?: number | null;
+  aggressionFactor?: number | null;
+  threeBetPct?: number | null;
+  showdownWinPct?: number | null;
   topReplayId?: string | null;
   topReplayUrl?: string | null;
   topReplayOpponent?: string | null;
@@ -51,7 +71,7 @@ type Candidate = {
 };
 
 const candidates = candidateData.candidates as Candidate[];
-const tierOptions = ["All tiers", "Locked", "Shortlist", "Strong backup", "Review", "Longshot"];
+const tierOptions = ["All tiers", "Locked", "Shortlist", "Strong backup", "Review", "Longshot", "History review"];
 const riskOptions = ["All identity", "Low", "Medium", "High"];
 
 function fmt(value?: number | null, digits = 0) {
@@ -103,6 +123,7 @@ export function CandidatePool() {
     const ordered = [...rows];
     ordered.sort((a, b) => {
       if (sort === "Current HU rank") return (a.huRank ?? 999) - (b.huRank ?? 999);
+      if (sort === "Historical peak") return (b.historicalPeakScore ?? -999) - (a.historicalPeakScore ?? -999);
       if (sort === "Tournament") return (b.tournamentAvgPercentile ?? 0) - (a.tournamentAvgPercentile ?? 0);
       if (sort === "Content") return (b.contentRate ?? 0) - (a.contentRate ?? 0);
       if (sort === "Recent form") return (b.recent1000Bb100 ?? -9999) - (a.recent1000Bb100 ?? -9999);
@@ -124,26 +145,26 @@ export function CandidatePool() {
     <main id="top" className="candidate-page">
       <header className="topbar candidate-topbar">
         <a className="brand" href="/candidates"><span className="brand-mark">A</span><span>ARENA / CANDIDATE ROOM</span></a>
-        <div className="topbar-meta"><a className="pool-link" href="/">8-PLAYER CLIP ROOM ↗</a><span>INTERNAL</span><span>30 PLAYERS</span></div>
+        <div className="topbar-meta"><a className="pool-link" href="/">8-PLAYER CLIP ROOM ↗</a><span>INTERNAL</span><span>30 RANKED + 2 REVIEW</span></div>
       </header>
 
       <section className="candidate-hero">
         <div className="candidate-hero-copy">
           <span className="section-kicker">FINAL TABLE · SELECTION WORKSPACE</span>
           <h1>Thirty players.<br /><em>One final table.</em></h1>
-          <p>Compare competitive strength, cross-format history, clip potential, operating samples and public-account depth. Composite rank is only a screening order—not the final decision.</p>
+          <p>Compare every observed HU run—not only the version currently occupying the leaderboard—with Tournament history, content potential, operating samples and public-account depth.</p>
         </div>
         <div className="candidate-summary">
-          <div><span>Pool</span><strong>30</strong></div>
+          <div><span>Ranked pool</span><strong>30</strong></div>
           <div><span>Your shortlist</span><strong>{shortlisted.length}</strong></div>
           <div><span>X account review</span><strong>{candidates.filter((candidate) => candidate.identityRisk !== "Low").length}</strong><small>flagged</small></div>
-          <div><span>Data refreshed</span><strong>JUL 16</strong><small>17:11 CST</small></div>
+          <div><span>Business locks</span><strong>2</strong><small>TheAAI + Field</small></div>
         </div>
       </section>
 
       <aside className="data-warning">
         <span>READ THIS FIRST</span>
-        <p>Jul 15 is a snapshot baseline; Jul 16 is the current snapshot, not a full trend. Treat live HU rank as one signal. X alt signal measures public-account footprint only: Low does not mean builder identity is verified. All builder links still require confirmation.</p>
+        <p>History-aware screening: submission-level AWS records through Jul 3 + Jul 15 public snapshot + current public data at Jul 16, 17:45 CST. This is not a rebuilt leaderboard. Later run history is reconstructed from observed snapshots, so missing history is marked rather than invented. Ranks #8–9 are effectively tied and need manual review.</p>
       </aside>
 
       <section className="candidate-controls">
@@ -151,7 +172,7 @@ export function CandidatePool() {
         <select value={tier} onChange={(event) => setTier(event.target.value)} aria-label="Filter by tier">{tierOptions.map((option) => <option key={option}>{option}</option>)}</select>
         <select value={risk} onChange={(event) => setRisk(event.target.value)} aria-label="Filter by identity risk">{riskOptions.map((option) => <option key={option}>{option}</option>)}</select>
         <select value={sort} onChange={(event) => setSort(event.target.value)} aria-label="Sort candidates">
-          {['Composite rank', 'Current HU rank', 'Tournament', 'Content', 'Recent form', 'Public footprint'].map((option) => <option key={option}>{option}</option>)}
+          {['Composite rank', 'Historical peak', 'Current HU rank', 'Tournament', 'Content', 'Recent form', 'Public footprint'].map((option) => <option key={option}>{option}</option>)}
         </select>
         <span className="visible-count">{visible.length} visible</span>
       </section>
@@ -165,7 +186,7 @@ export function CandidatePool() {
               <div className="candidate-card-head">
                 <div className="candidate-avatar"><span>{avatarInitials(candidate)}</span><img src={candidate.avatar} alt="" onError={(event) => { event.currentTarget.style.display = "none"; }} /></div>
                 <div className="candidate-person">
-                  <div className="badge-row"><span className={`tier-badge ${tierClass(candidate.tier)}`}>{candidate.tier}</span><span className={`identity-badge ${riskClass(candidate.identityRisk)}`}>{candidate.identityRisk} X alt signal</span></div>
+                  <div className="badge-row"><span className={`tier-badge ${tierClass(candidate.tier)}`}>{candidate.tier}</span>{candidate.businessLock ? <span className="lock-badge">BUSINESS LOCK</span> : null}<span className={`identity-badge ${riskClass(candidate.identityRisk)}`}>{candidate.identityRisk} X alt signal</span></div>
                   <h2>{candidate.name}</h2>
                   <a href={`https://x.com/${candidate.handle}`} target="_blank" rel="noreferrer">{candidate.displayName} · @{candidate.handle} ↗</a>
                 </div>
@@ -175,32 +196,39 @@ export function CandidatePool() {
               <div className="candidate-style"><span>OBSERVED STYLE</span><strong>{candidate.style}</strong><small>{candidate.bio || "No public profile bio"}</small></div>
 
               <div className="candidate-metrics">
-                <div><span>Screening order</span><strong>{candidate.tier === "Locked" ? "LOCK" : `#${candidate.selectionRank}`}</strong><small>{candidate.selectionScore ? `${fmt(candidate.selectionScore, 1)} composite` : "special entrant"}</small></div>
-                <div><span>HU rank now</span><strong>{candidate.huRank ? `#${candidate.huRank}` : "—"}</strong><small>{candidate.previousHuRank ? `Jul 15: #${candidate.previousHuRank}` : "no Jul 15 baseline"}{rankMovement ? ` · ${rankMovement > 0 ? "▼" : "▲"}${Math.abs(rankMovement)}` : ""}</small></div>
-                <div><span>HU sample</span><strong>{fmt(candidate.huHistoricalHands)}</strong><small>{fmt(candidate.huScoredHands)} currently scored</small></div>
-                <div><span>Recent 1k</span><strong className={(candidate.recent1000Bb100 ?? 0) >= 0 ? "positive" : "negative"}>{signed(candidate.recent1000Bb100)}</strong><small>bb / 100</small></div>
+                <div><span>Screening order</span><strong>{candidate.tier === "Locked" ? "LOCK" : `#${candidate.selectionRank}`}</strong><small>{candidate.selectionScore ? `${fmt(candidate.selectionScore, 1)} history-aware` : "special entrant"}</small></div>
+                <div><span>Historical peak</span><strong>{candidate.historicalPeakScore === null || candidate.historicalPeakScore === undefined ? "—" : fmt(candidate.historicalPeakScore, 1)}</strong><small>{candidate.platformBestRank ? `platform best #${candidate.platformBestRank}` : "no HU history"} · max run {fmt(candidate.historicalMaxRunHands)}</small></div>
+                <div><span>Current HU</span><strong>{candidate.huRank ? `#${candidate.huRank}` : "—"}</strong><small>{fmt(candidate.huTrueSkill, 1)} score · {fmt(candidate.huScoredHands)} hands</small></div>
+                <div><span>Jul 15 snapshot</span><strong>{candidate.previousHuRank ? `#${candidate.previousHuRank}` : "—"}</strong><small>{rankMovement ? `${rankMovement > 0 ? "▼" : "▲"}${Math.abs(rankMovement)} ranks vs current` : "no comparable snapshot"}</small></div>
                 <div><span>Tournament</span><strong>{candidate.tournamentSeasons} seasons</strong><small>{candidate.tournamentSeasons ? `latest #${candidate.tournamentLatestRank} · best #${candidate.tournamentBestRank} · avg top ${fmt((1 - candidate.tournamentAvgPercentile) * 100, 0)}%` : "no history"}</small></div>
-                <div><span>Clip density</span><strong>{candidate.contentGrade}</strong><small>{candidate.contentRate === null || candidate.contentRate === undefined ? "format mismatch" : `${fmt(candidate.contentRate, 1)} automated signals / 1k`}</small></div>
+                <div><span>Observed versions</span><strong>≥{fmt(candidate.versionCount)}</strong><small>{fmt(candidate.eligible20kRuns)} seen at 20K+ · {fmt(candidate.huHistoricalHands)} platform HU hands</small></div>
               </div>
 
               <div className="candidate-evidence">
+                <div className="account-evidence history-evidence">
+                  <span>HISTORY SIGNAL</span>
+                  <strong className={(candidate.scoreRegression ?? 0) < -25 ? "negative" : "positive"}>{candidate.scoreRegression === null || candidate.scoreRegression === undefined ? "No HU comparison" : `${signed(candidate.scoreRegression, 1)} current vs peak`}</strong>
+                  <p>{candidate.rankRegression && candidate.rankRegression > 20 ? `Current-only ranking understates this agent by ${candidate.rankRegression} places versus its best observed rank.` : "Current and historical evidence are broadly aligned, or the history sample is limited."}</p>
+                  <small>{candidate.positiveRunRate === null || candidate.positiveRunRate === undefined ? "run consistency unavailable" : `${fmt(candidate.positiveRunRate * 100, 0)}% positive observed runs`} · peak {fmt(candidate.historicalPeakScore, 1)}</small>
+                </div>
+                <div className="ops-evidence">
+                  <span>OPS / CONTENT</span>
+                  <strong>{candidate.medianDecisionSec ? `${fmt(candidate.medianDecisionSec, 2)}s sampled median` : "No HU timing sample"}</strong>
+                  <p>{candidate.sampledTimeoutRate === null || candidate.sampledTimeoutRate === undefined ? "No comparable HU timeout spot-check" : `timeout spot-check: ${fmt(candidate.sampledTimeoutRate * candidate.sampledActions, 0)}/${candidate.sampledActions} sampled actions`}</p>
+                  <small>{fmt(candidate.clipCandidateCount)} automated clip signals · {fmt(candidate.analyzedHandCount)} hands analyzed</small>
+                </div>
                 <div className="account-evidence">
                   <span>PUBLIC X FOOTPRINT</span>
                   <strong className={riskClass(candidate.identityRisk)}>{candidate.identityRisk} alt signal</strong>
                   <p>{candidate.identityNote}</p>
                   <small>{candidate.followers === null || candidate.followers === undefined ? "followers unavailable" : `${fmt(candidate.followers)} followers`} · {candidate.posts === null || candidate.posts === undefined ? "posts unavailable" : `${fmt(candidate.posts)} posts`}</small>
                 </div>
-                <div className="ops-evidence">
-                  <span>OPS / CONTENT</span>
-                  <strong>{candidate.medianDecisionSec ? `${fmt(candidate.medianDecisionSec, 2)}s sampled median` : "No HU timing sample"}</strong>
-                  <p>{candidate.sampledTimeoutRate === null || candidate.sampledTimeoutRate === undefined ? "No comparable HU timeout spot-check" : `timeout spot-check: ${fmt(candidate.sampledTimeoutRate * candidate.sampledActions, 0)}/${candidate.sampledActions} sampled actions`}</p>
-                  <small>{fmt(candidate.clipCandidateCount)} automated clip candidates · {fmt(candidate.totalObservedHands)} observed hands</small>
-                </div>
               </div>
 
               <details className="candidate-details">
-                <summary>Observed poker profile</summary>
-                <div><span>VPIP<strong>{fmt(candidate.vpip * 100, 1)}%</strong></span><span>PFR<strong>{fmt(candidate.pfr * 100, 1)}%</strong></span><span>AF<strong>{fmt(candidate.aggressionFactor, 2)}</strong></span><span>3-BET<strong>{fmt(candidate.threeBetPct * 100, 1)}%</strong></span><span>WSD<strong>{fmt(candidate.showdownWinPct * 100, 1)}%</strong></span><span>Lifetime HU<strong>{signed(candidate.realizedBb100)}</strong></span></div>
+                <summary>Observed runs & poker profile</summary>
+                <div><span>VPIP<strong>{candidate.vpip === null || candidate.vpip === undefined ? "—" : `${fmt(candidate.vpip * 100, 1)}%`}</strong></span><span>PFR<strong>{candidate.pfr === null || candidate.pfr === undefined ? "—" : `${fmt(candidate.pfr * 100, 1)}%`}</strong></span><span>AF<strong>{fmt(candidate.aggressionFactor, 2)}</strong></span><span>3-BET<strong>{candidate.threeBetPct === null || candidate.threeBetPct === undefined ? "—" : `${fmt(candidate.threeBetPct * 100, 1)}%`}</strong></span><span>WSD<strong>{candidate.showdownWinPct === null || candidate.showdownWinPct === undefined ? "—" : `${fmt(candidate.showdownWinPct * 100, 1)}%`}</strong></span><span>Recent 1k<strong>{signed(candidate.recent1000Bb100)}</strong></span></div>
+                {candidate.observedRuns && candidate.observedRuns.length > 0 ? <div className="run-history">{candidate.observedRuns.map((run, index) => <span key={`${run.source}-${index}`}><small>{run.source}</small><strong>{fmt(run.score, 1)}</strong><em>{fmt(run.hands)} hands · {run.eligible20k ? "20K+" : "provisional"}</em></span>)}</div> : null}
               </details>
 
               <div className="candidate-actions">
@@ -214,10 +242,10 @@ export function CandidatePool() {
 
       <aside className="data-warning methodology-note">
         <span>SCREENING WEIGHTS</span>
-        <p>HU strength 40 · Tournament 25 · reliability signals 15 · realized hand quality 10 · cross-format activity 5 · clip readiness 5. Use the order to narrow the pool, then review the underlying evidence.</p>
+        <p>Historical HU 35 · current HU 10 · HU history depth 10 · cross-version consistency 5 · Tournament 20 · realized quality 5 · reliability 10 · clip readiness 5. This order is for screening; inspect the runs before locking finalists.</p>
       </aside>
 
-      <footer><span>FINAL TABLE · 30-PLAYER CANDIDATE POOL</span><a href="#top">BACK TO TOP ↑</a></footer>
+      <footer><span>FINAL TABLE · HISTORY-CORRECTED CANDIDATE POOL</span><a href="#top">BACK TO TOP ↑</a></footer>
     </main>
   );
 }

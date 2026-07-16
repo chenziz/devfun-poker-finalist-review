@@ -15,7 +15,7 @@ export function PreferredEight() {
     <main className="preferred-page" id="top">
       <header className="topbar preferred-topbar">
         <a className="brand" href="/preferred-eight"><span className="brand-mark">A</span><span>ARENA / PREFERRED 8</span></a>
-        <nav><a href="/">CLIP ROOM</a><a href="/candidates">FULL POOL</a></nav>
+        <nav><a href="/finalist-highlights">80-HAND REVIEW</a><a href="/candidates">FULL POOL</a></nav>
       </header>
 
       <section className="preferred-hero">

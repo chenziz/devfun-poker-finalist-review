@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import data from "./data/finalist-highlights.json";
 
 type Highlight = (typeof data.players)[number]["highlights"][number];
+type ReplayModal = { url: string; title: string; replayId: string };
 
 const clipKey = (player: string, replayId: string) => `${player}::${replayId}`;
 const REVIEWED_STORAGE_KEY = "finalist-highlight-reviewed-v2";
@@ -28,11 +29,26 @@ export function FinalistHighlights() {
   const [reviewFilter, setReviewFilter] = useState("Unreviewed");
   const [playerFilter, setPlayerFilter] = useState("All finalists");
   const [copyStatus, setCopyStatus] = useState("COPY SHORTLIST");
+  const [activeReplay, setActiveReplay] = useState<ReplayModal | null>(null);
 
   useEffect(() => {
     setReviewed(new Set(JSON.parse(localStorage.getItem(REVIEWED_STORAGE_KEY) || "[]")));
     setShortlisted(new Set(JSON.parse(localStorage.getItem(SHORTLIST_STORAGE_KEY) || "[]")));
   }, []);
+
+  useEffect(() => {
+    if (!activeReplay) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setActiveReplay(null);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [activeReplay]);
 
   const toggle = (kind: "reviewed" | "shortlisted", id: string) => {
     const current = kind === "reviewed" ? reviewed : shortlisted;
@@ -149,7 +165,10 @@ export function FinalistHighlights() {
                       <details className="highlight-action"><summary>View action line</summary><p>{clip.actionLine}</p></details>
                       <div className="highlight-scores"><span>Style<strong>{clip.styleScore}</strong></span><span>Drama<strong>{clip.dramaScore}</strong></span><span>Commentary<strong>{clip.commentaryScore}</strong></span></div>
                       <div className="highlight-actions">
-                        <a href={clip.replayUrl} target="_blank" rel="noreferrer" onClick={() => { if (!isReviewed) toggle("reviewed", key); }}>OPEN REPLAY ↗</a>
+                        <button className="highlight-open-replay" onClick={() => {
+                          if (!isReviewed) toggle("reviewed", key);
+                          setActiveReplay({ url: clip.replayUrl, title: `${player.name} vs ${clip.opponent}`, replayId: clip.replayId });
+                        }}>WATCH REPLAY</button>
                         <button onClick={() => toggle("reviewed", key)}>{isReviewed ? "✓ REVIEWED" : "MARK REVIEWED"}</button>
                         <button onClick={() => toggle("shortlisted", key)}>{isShortlisted ? "★ SHORTLISTED" : "☆ SHORTLIST"}</button>
                       </div>
@@ -164,6 +183,18 @@ export function FinalistHighlights() {
 
       <aside className="highlight-method"><span>EDITORIAL METHOD</span><p>{data.method.scanned}. {data.method.scouted}. Final selection: {data.method.selected}. “Primary” means start tomorrow’s review there; it does not mean the clip is approved for the public stream yet.</p></aside>
       <footer className="preferred-footer"><span>FINALIST HIGHLIGHT REVIEW · {new Date(data.generatedAt).toLocaleDateString("en-US")}</span><a href="#top">BACK TO TOP ↑</a></footer>
+
+      {activeReplay && (
+        <div className="replay-modal-backdrop" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) setActiveReplay(null); }}>
+          <section className="replay-modal" role="dialog" aria-modal="true" aria-labelledby="replay-modal-title">
+            <header>
+              <div><span>LIVE REPLAY</span><strong id="replay-modal-title">{activeReplay.title}</strong><small>{activeReplay.replayId}</small></div>
+              <nav><a href={activeReplay.url} target="_blank" rel="noreferrer">OPEN FULL PAGE ↗</a><button onClick={() => setActiveReplay(null)} aria-label="Close replay">CLOSE ×</button></nav>
+            </header>
+            <iframe src={activeReplay.url} title={`${activeReplay.title} replay`} allow="autoplay; fullscreen" />
+          </section>
+        </div>
+      )}
     </main>
   );
 }

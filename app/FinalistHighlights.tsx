@@ -25,8 +25,8 @@ function cardText(cards: string[]) {
 export function FinalistHighlights() {
   const [reviewed, setReviewed] = useState<Set<string>>(new Set());
   const [shortlisted, setShortlisted] = useState<Set<string>>(new Set());
-  const [useFilter, setUseFilter] = useState("Primary");
-  const [reviewFilter, setReviewFilter] = useState("Unreviewed");
+  const [useFilter, setUseFilter] = useState("All clips");
+  const [reviewFilter, setReviewFilter] = useState("All status");
   const [playerFilter, setPlayerFilter] = useState("All finalists");
   const [copyStatus, setCopyStatus] = useState("COPY SHORTLIST");
   const [activeReplay, setActiveReplay] = useState<ReplayModal | null>(null);
@@ -148,30 +148,34 @@ export function FinalistHighlights() {
 
               <aside className="highlight-commentary-angle"><span>COMMENTARY ANGLE</span><p>{player.style.commentary}</p></aside>
 
-              <div className="highlight-grid">
+              <div className="highlight-clip-list">
                 {player.highlights.map((clip: Highlight) => {
                   const key = clipKey(player.sourceName, clip.replayId);
                   const isReviewed = reviewed.has(key);
                   const isShortlisted = shortlisted.has(key);
                   return (
-                    <article className={`highlight-card ${isReviewed ? "is-reviewed" : ""} ${isShortlisted ? "is-shortlisted" : ""}`} key={clip.replayId}>
-                      <div className="highlight-card-top"><span className={`highlight-use highlight-use-${clip.recommendedUse.toLowerCase()}`}>{clip.recommendedUse}</span><span>{clip.category}</span><b>#{clip.rank}</b></div>
-                      <div className="highlight-hand"><strong>{cardText(clip.heroCards)}</strong><span>vs {clip.opponent}</span></div>
-                      <div className="highlight-board"><span>BOARD</span><strong>{cardText(clip.board)}</strong></div>
-                      <div className="highlight-result"><strong className={clip.won ? "positive" : "negative"}>{clip.won ? "WIN" : "LOSS"} {clip.chipDelta > 0 ? "+" : ""}{fmt(clip.chipDelta)}</strong><span>net chip result</span></div>
-                      <p className="highlight-summary">{clip.highlight}</p>
-                      <div className="highlight-reason"><span>WHY IT REPRESENTS THE STYLE</span><p>{clip.whyStyle}</p></div>
-                      <div className="highlight-hook"><span>COMMENTARY HOOK</span><p>{clip.commentaryHook}</p></div>
-                      <details className="highlight-action"><summary>View action line</summary><p>{clip.actionLine}</p></details>
-                      <div className="highlight-scores"><span>Style<strong>{clip.styleScore}</strong></span><span>Drama<strong>{clip.dramaScore}</strong></span><span>Commentary<strong>{clip.commentaryScore}</strong></span></div>
-                      <div className="highlight-actions">
+                    <article className={`highlight-clip-row ${isReviewed ? "is-reviewed" : ""} ${isShortlisted ? "is-shortlisted" : ""}`} key={clip.replayId}>
+                      <div className="highlight-clip-main">
+                        <b className="highlight-clip-rank">{String(clip.rank).padStart(2, "0")}</b>
+                        <div className="highlight-clip-labels"><span className={`highlight-use highlight-use-${clip.recommendedUse.toLowerCase()}`}>{clip.recommendedUse}</span><span>{clip.category}</span></div>
+                        <div className="highlight-clip-hand"><strong>{cardText(clip.heroCards)}</strong><span>vs {clip.opponent}</span></div>
+                        <div className="highlight-clip-board"><span>BOARD</span><strong>{cardText(clip.board)}</strong></div>
+                        <div className="highlight-clip-result"><strong className={clip.won ? "positive" : "negative"}>{clip.won ? "WIN" : "LOSS"} {clip.chipDelta > 0 ? "+" : ""}{fmt(clip.chipDelta)}</strong><span>net chips</span></div>
+                        <div className="highlight-clip-score"><span>EDITORIAL</span><strong>{Math.round((clip.styleScore + clip.dramaScore + clip.commentaryScore) / 3)}</strong></div>
+                        <div className="highlight-actions">
                         <button className="highlight-open-replay" onClick={() => {
                           if (!isReviewed) toggle("reviewed", key);
                           setActiveReplay({ url: clip.replayUrl, title: `${player.name} vs ${clip.opponent}`, replayId: clip.replayId });
-                        }}>WATCH REPLAY</button>
-                        <button onClick={() => toggle("reviewed", key)}>{isReviewed ? "✓ REVIEWED" : "MARK REVIEWED"}</button>
-                        <button onClick={() => toggle("shortlisted", key)}>{isShortlisted ? "★ SHORTLISTED" : "☆ SHORTLIST"}</button>
+                        }}>WATCH</button>
+                        <button onClick={() => toggle("reviewed", key)} aria-label={isReviewed ? "Mark unreviewed" : "Mark reviewed"}>{isReviewed ? "✓" : "REVIEW"}</button>
+                        <button onClick={() => toggle("shortlisted", key)} aria-label={isShortlisted ? "Remove from shortlist" : "Add to shortlist"}>{isShortlisted ? "★" : "☆"}</button>
+                        </div>
                       </div>
+                      <details className="highlight-clip-details">
+                        <summary>DETAILS · WHY THIS HAND · COMMENTARY</summary>
+                        <div><section><span>HIGHLIGHT</span><p>{clip.highlight}</p></section><section><span>WHY IT REPRESENTS THE STYLE</span><p>{clip.whyStyle}</p></section><section><span>COMMENTARY HOOK</span><p>{clip.commentaryHook}</p></section></div>
+                        <p className="highlight-clip-actionline"><span>ACTION LINE</span>{clip.actionLine}</p>
+                      </details>
                     </article>
                   );
                 })}

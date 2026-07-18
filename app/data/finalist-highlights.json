@@ -329,7 +329,7 @@
           "whyStyle": "Delayed aggression is the story: the bot gives the opponent room, then takes control with a raise.",
           "commentaryHook": "Reveal the initial check first, then pause before the raise so the trap is understandable on screen.",
           "rank": 4,
-          "recommendedUse": "Secondary"
+          "recommendedUse": "Primary"
         },
         {
           "replayId": "cmrbn7l8suspd5mevaa7ktbxz",
@@ -499,7 +499,7 @@
           "whyStyle": "Aggression continues across streets, making the bot's commitment and sizing pattern easy to narrate.",
           "commentaryHook": "Hold on the final bet before revealing the response; the audience can judge whether the sizing is value or pressure.",
           "rank": 7,
-          "recommendedUse": "Backup"
+          "recommendedUse": "Secondary"
         },
         {
           "replayId": "cmrco1y6k34586xly5ivnfawy",
@@ -1010,7 +1010,7 @@
           "whyStyle": "The river creates a single, legible decision point that viewers can debate before the action is revealed.",
           "commentaryHook": "Pause before the river call and ask whether the opponent is value-heavy or bluff-heavy.",
           "rank": 4,
-          "recommendedUse": "Secondary"
+          "recommendedUse": "Primary"
         },
         {
           "replayId": "cmr3r5c8702db9ta4f27fgbqq",
@@ -1179,7 +1179,7 @@
           "whyStyle": "The starting cards make the range width visible and show how the bot creates value from hands others may discard.",
           "commentaryHook": "Built-in rivalry: Thaddius versus finalist Grinder. Pause before the decisive action and let commentary pick a side.",
           "rank": 7,
-          "recommendedUse": "Backup"
+          "recommendedUse": "Secondary"
         },
         {
           "replayId": "cmrkw7wt5bvyxst8n6c684zow",
@@ -1702,7 +1702,7 @@
           "whyStyle": "The river creates a single, legible decision point that viewers can debate before the action is revealed.",
           "commentaryHook": "Pause before the river call and ask whether the opponent is value-heavy or bluff-heavy.",
           "rank": 4,
-          "recommendedUse": "Secondary"
+          "recommendedUse": "Primary"
         },
         {
           "replayId": "cmrk61k0it24xst8nnr4pvsvb",
@@ -1872,7 +1872,7 @@
           "whyStyle": "The river creates a single, legible decision point that viewers can debate before the action is revealed.",
           "commentaryHook": "Hold on the final bet before revealing the response; the audience can judge whether the sizing is value or pressure.",
           "rank": 7,
-          "recommendedUse": "Backup"
+          "recommendedUse": "Secondary"
         },
         {
           "replayId": "cmr97avg30rz35mevrtxtq9w1",
@@ -2374,7 +2374,7 @@
           "whyStyle": "The river creates a single, legible decision point that viewers can debate before the action is revealed.",
           "commentaryHook": "Pause before the river call and ask whether the opponent is value-heavy or bluff-heavy.",
           "rank": 4,
-          "recommendedUse": "Secondary"
+          "recommendedUse": "Primary"
         },
         {
           "replayId": "cmrkix7b4ooh8st8n1zovu1hj",
@@ -2543,7 +2543,7 @@
           "whyStyle": "This is the useful counterexample: it shows where the same style can become overcommitment or an expensive refusal to stop.",
           "commentaryHook": "Ask where the line should have stopped; the loss gives commentators something concrete to criticize rather than only celebrate.",
           "rank": 7,
-          "recommendedUse": "Backup"
+          "recommendedUse": "Secondary"
         },
         {
           "replayId": "cmrlui5wdudryst8nevy8570y",
@@ -3067,7 +3067,7 @@
           "whyStyle": "Aggression continues across streets, making the bot's commitment and sizing pattern easy to narrate.",
           "commentaryHook": "Built-in rivalry: dein Joni versus finalist Grinder. Pause before the decisive action and let commentary pick a side.",
           "rank": 4,
-          "recommendedUse": "Secondary"
+          "recommendedUse": "Primary"
         },
         {
           "replayId": "cmriqlwjsuinlst8nmme68l2x",
@@ -3237,7 +3237,7 @@
           "whyStyle": "The river creates a single, legible decision point that viewers can debate before the action is revealed.",
           "commentaryHook": "Built-in rivalry: dein Joni versus finalist folzterac. Pause before the decisive action and let commentary pick a side.",
           "rank": 7,
-          "recommendedUse": "Backup"
+          "recommendedUse": "Secondary"
         },
         {
           "replayId": "cmr43jkjr6v3yib6sxi46tctc",
@@ -3758,7 +3758,7 @@
           "whyStyle": "This is the useful counterexample: it shows where the same style can become overcommitment or an expensive refusal to stop.",
           "commentaryHook": "Built-in rivalry: Antge Poker Bot versus finalist dein Joni. Pause before the decisive action and let commentary pick a side.",
           "rank": 4,
-          "recommendedUse": "Secondary"
+          "recommendedUse": "Primary"
         },
         {
           "replayId": "cmrkkwcbx94crst8nstoso4bs",
@@ -3926,7 +3926,7 @@
           "whyStyle": "This is initiative without needing showdown—the clearest way to see how its pressure changes opponent behavior.",
           "commentaryHook": "Built-in rivalry: Antge Poker Bot versus finalist dein Joni. Pause before the decisive action and let commentary pick a side.",
           "rank": 7,
-          "recommendedUse": "Backup"
+          "recommendedUse": "Secondary"
         },
         {
           "replayId": "cmre2gfis3t3yuxm7ec1ytqup",
@@ -4442,7 +4442,7 @@
           "whyStyle": "Aggression continues across streets, making the bot's commitment and sizing pattern easy to narrate.",
           "commentaryHook": "Hold on the final bet before revealing the response; the audience can judge whether the sizing is value or pressure.",
           "rank": 4,
-          "recommendedUse": "Secondary"
+          "recommendedUse": "Primary"
         },
         {
           "replayId": "cmrgyqiebl0bnst8n3rq1m1dg",
@@ -4611,7 +4611,7 @@
           "whyStyle": "This is initiative without needing showdown—the clearest way to see how its pressure changes opponent behavior.",
           "commentaryHook": "Hold on the final bet before revealing the response; the audience can judge whether the sizing is value or pressure.",
           "rank": 7,
-          "recommendedUse": "Backup"
+          "recommendedUse": "Secondary"
         },
         {
           "replayId": "cmrkl5qcrbwekst8ngfjlzjkn",
@@ -5123,7 +5123,7 @@
           "whyStyle": "The river creates a single, legible decision point that viewers can debate before the action is revealed.",
           "commentaryHook": "Built-in rivalry: folzterac versus finalist dein Joni. Pause before the decisive action and let commentary pick a side.",
           "rank": 4,
-          "recommendedUse": "Secondary"
+          "recommendedUse": "Primary"
         },
         {
           "replayId": "cmrlbizaxftdfst8nv4jvzsuc",
@@ -5292,7 +5292,7 @@
           "whyStyle": "This is initiative without needing showdown—the clearest way to see how its pressure changes opponent behavior.",
           "commentaryHook": "Hold on the final bet before revealing the response; the audience can judge whether the sizing is value or pressure.",
           "rank": 7,
-          "recommendedUse": "Backup"
+          "recommendedUse": "Secondary"
         },
         {
           "replayId": "cmrgsg3czo4pyst8nk8zemte9",

@@ -158,7 +158,7 @@ export function CandidatePool() {
           <div><span>Ranked pool</span><strong>30</strong></div>
           <div><span>Your shortlist</span><strong>{shortlisted.length}</strong></div>
           <div><span>X account review</span><strong>{candidates.filter((candidate) => candidate.identityRisk !== "Low").length}</strong><small>flagged</small></div>
-          <div><span>Business locks</span><strong>2</strong><small>TheAAI + Field</small></div>
+          <div><span>Business locks</span><strong>2</strong><small>AlphaHorizon + Field</small></div>
         </div>
       </section>
 

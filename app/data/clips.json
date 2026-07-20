@@ -910,7 +910,7 @@
     "action_summary": "P V:raise 30, H:raise 120, V:call 90 | F H:bet 165, V:call 165 | T H:bet 434, V:call 434 | R H:check, V:bet 281, H:call 281"
   },
   {
-    "player": "TheAAI / AlphaHorizon",
+    "player": "AlphaHorizon",
     "usage": "Primary",
     "clip_type": "Signature",
     "replay_id": "cmr9l9mjq91ue5mevx37rncgo",
@@ -923,7 +923,7 @@
     "action_summary": "P V:fold, V:fold, V:raise 30, V:call 30, H:raise 150, V:fold, V:call 120 | F H:bet 80, V:call 80 | T H:check, V:bet 346, H:raise 540, V:fold"
   },
   {
-    "player": "TheAAI / AlphaHorizon",
+    "player": "AlphaHorizon",
     "usage": "Secondary",
     "clip_type": "Spectacle",
     "replay_id": "cmr6slni2j3in5mev492krvxr",
@@ -936,7 +936,7 @@
     "action_summary": "P H:raise 25, V:fold, V:fold, V:call 25, V:fold, V:call 15 | F V:check, H:check, V:bet 23, V:fold, H:raise 75, V:call 52 | T H:check, V:bet 152, H:raise 550, V:call 398 | R H:check, V:bet 1018, H:raise 5520, V:call 4502"
   },
   {
-    "player": "TheAAI / AlphaHorizon",
+    "player": "AlphaHorizon",
     "usage": "Secondary",
     "clip_type": "Overbet",
     "replay_id": "cmr7burfsgpkd5mevktdcpu3b",
@@ -949,7 +949,7 @@
     "action_summary": "P V:fold, V:fold, V:fold, H:raise 25, V:fold, V:call 15 | F V:bet 18, H:raise 50, V:call 32 | T V:check, H:bet 45, V:call 45 | R V:check, H:bet 15965, V:fold"
   },
   {
-    "player": "TheAAI / AlphaHorizon",
+    "player": "AlphaHorizon",
     "usage": "Quick cut",
     "clip_type": "Overbet",
     "replay_id": "cmr7js9ep3t0g5mev275peata",
@@ -962,7 +962,7 @@
     "action_summary": "P V:fold, V:raise 25, V:fold, V:call 25, H:raise 150, V:fold, V:fold, V:call 125 | F H:bet 80, V:call 80 | T H:bet 300, V:call 300 | R H:bet 10874, V:fold"
   },
   {
-    "player": "TheAAI / AlphaHorizon",
+    "player": "AlphaHorizon",
     "usage": "Quick cut",
     "clip_type": "Value",
     "replay_id": "cmrbdvxaxly9r5mevaobs6xje",
@@ -975,7 +975,7 @@
     "action_summary": "P V:fold, V:fold, H:raise 25, V:fold, V:fold, V:call 15 | F V:bet 30, H:raise 95, V:call 65 | T V:check, H:bet 160, V:call 160 | R V:check, H:bet 900, V:fold"
   },
   {
-    "player": "TheAAI / AlphaHorizon",
+    "player": "AlphaHorizon",
     "usage": "Research",
     "clip_type": "River pressure",
     "replay_id": "cmrdlk452vfra6xlywfwjpa8k",
@@ -988,7 +988,7 @@
     "action_summary": "P H:raise 20, V:call 20, V:raise 60, V:fold, V:fold, V:fold, H:raise 220, V:fold, V:call 160 | F H:bet 160, V:call 160 | T H:check, V:check | R H:bet 580, V:fold"
   },
   {
-    "player": "TheAAI / AlphaHorizon",
+    "player": "AlphaHorizon",
     "usage": "Research",
     "clip_type": "Value",
     "replay_id": "cmr8x4el0v5vk5mev00hnyfwc",
@@ -1001,7 +1001,7 @@
     "action_summary": "P V:raise 25, V:fold, H:call 15 | F H:check, V:bet 37, H:raise 90, V:call 53 | T H:bet 160, V:call 160 | R H:bet 440, V:call 440"
   },
   {
-    "player": "TheAAI / AlphaHorizon",
+    "player": "AlphaHorizon",
     "usage": "Research",
     "clip_type": "River value",
     "replay_id": "cmr9nk1jny5mk5mev1popss0m",
@@ -1014,7 +1014,7 @@
     "action_summary": "P V:fold, V:fold, H:raise 30, V:fold, V:call 25, V:fold | F V:check, H:bet 50, V:call 50 | T V:check, H:check | R V:bet 136, H:raise 600, V:call 464"
   },
   {
-    "player": "TheAAI / AlphaHorizon",
+    "player": "AlphaHorizon",
     "usage": "Research",
     "clip_type": "Raising war",
     "replay_id": "cmr5il6untp2j5mevp725xp1p",
@@ -1027,7 +1027,7 @@
     "action_summary": "P V:fold, V:fold, H:raise 20, V:fold, V:call 10 | F V:bet 22, H:call 22 | T V:check, H:bet 50, V:call 50 | R V:bet 160, H:raise 438, V:raise 716"
   },
   {
-    "player": "TheAAI / AlphaHorizon",
+    "player": "AlphaHorizon",
     "usage": "Research",
     "clip_type": "River pressure",
     "replay_id": "cmr7wfmk7vy0b5mevyozyhhis",

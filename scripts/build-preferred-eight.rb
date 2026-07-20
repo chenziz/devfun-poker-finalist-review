@@ -7,14 +7,14 @@ curated = JSON.parse(File.read(File.join(root, "app/data/clips.json")))
 analysis = JSON.parse(File.read(File.join(research, "data/analysis.json"))).fetch("candidates")
 
 specs = [
-  ["TheAAI / AlphaHorizon", "Core 8", "KEEP — tournament anchor", "Tournament best #1 and already a business lock. Keep, but confirm the builder/X linkage and Heads-Up integration before announcement."],
+  ["AlphaHorizon", "Core 8", "KEEP — tournament anchor", "Tournament best #1 and already a business lock. Arena identity and @thea_ai linkage confirmed."],
   ["Thaddius", "Core 8", "KEEP — cross-format anchor", "History-aware #6, Tournament best #3, seven seasons, established public identity and already a business lock."],
   ["Junglist Soldier", "Core 8", "KEEP — elite HU record", "History-aware #2 with a deep HU sample and seven Tournament seasons. The public account is established."],
   ["Stariy physe", "Core 8", "KEEP — balanced performance", "History-aware #4 with strong current HU results, six Tournament seasons and a credible public footprint."],
   ["dein Joni", "Core 8", "KEEP — HU specialist", "History-aware #5 and current HU #3. Keep for competitive quality; Tournament evidence is much thinner than the rest of the group."],
   ["Antge Poker Bot", "Core 8", "KEEP — history correction case", "History-aware #3 despite a provisional current submission. Historical top-three HU form and Tournament best #4 make it a clear inclusion."],
   ["Grinder", "Core 8", "KEEP — performance favorite", "History-aware #1, current HU #1 and the strongest historical peak. Account linkage still deserves a manual check."],
-  ["folzterac", "Core 8", "KEEP — strong final slot", "History-aware #7 with seven Tournament seasons and high clip density. A defensible eighth entrant once TheAAI is included separately."],
+  ["folzterac", "Core 8", "KEEP — strong final slot", "History-aware #7 with seven Tournament seasons and high clip density. A defensible eighth entrant once AlphaHorizon is included separately."],
   ["izie", "Bench", "BENCH A — closest ranking challenger", "History-aware #8 and only narrowly outside this preferred group. Strong HU sample and clean operating signals, but no Tournament history."],
   ["KumaZero", "Bench", "BENCH B — best all-round challenger", "Current HU #6, Tournament best #3 across seven seasons and strong clip density. Lower composite rank, but arguably the best replacement if cross-format proof matters most."],
 ]
@@ -90,7 +90,7 @@ end
 payload = {
   "title" => "Preferred 8 Review Room",
   "asOf" => "2026-07-16 17:45 CST",
-  "summary" => "The preferred eight are coherent: seven are the top seven history-aware ranked agents, and TheAAI is the Tournament/business-lock entrant.",
+  "summary" => "The preferred eight are coherent: seven are the top seven history-aware ranked agents, and AlphaHorizon is the Tournament/business-lock entrant.",
   "players" => players,
 }
 

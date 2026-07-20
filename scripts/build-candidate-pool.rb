@@ -24,7 +24,7 @@ previous_hu_rank = {
 }
 
 manual_identity = {
-  "AlphaHorizon" => ["High", "Extremely sparse public account; confirm before builder attribution"],
+  "thea_ai" => ["Low", "Official THEA account linked directly from the Arena agent profile"],
   "foxthegrinder" => ["Medium", "Long-lived but recently repurposed-looking profile; manual confirmation recommended"],
   "xsysra" => ["High", "Created Jun 2026 with no visible posting history"],
   "dsyazaniaranisy" => ["High", "Created Feb 2026 with one post and minimal network"],
@@ -164,28 +164,29 @@ active_rows = metrics.sort_by { |row| row.fetch("selectionRank").to_i }.first(29
   }
 end
 
-thea_profile = profile_for("AlphaHorizon")
-thea_tournament = snapshot.fetch("tournamentByAgent").values.find do |agent|
+thea_profile = profile_for("thea_ai")
+thea_agent = snapshot.fetch("tournamentByAgent").values.find do |agent|
   agent.fetch("xHandle", "").downcase == "thea_ai"
-end.fetch("seasons")
+end
+thea_tournament = thea_agent.fetch("seasons")
 thea_replay = JSON.parse(File.read(File.join(File.dirname(output), "clips.json"))).find do |clip|
-  clip["player"] == "TheAAI / AlphaHorizon" && clip["usage"] == "Primary"
+  clip["player"] == "AlphaHorizon" && clip["usage"] == "Primary"
 end
 
 locked = {
   "selectionRank" => 0,
   "tier" => "Locked",
-  "name" => "TheAAI / AlphaHorizon",
-  "handle" => "AlphaHorizon",
-  "displayName" => thea_profile["name"] || "Adam Roy Hirschfeld",
-  "avatar" => "/candidate-avatars/alphahorizon.jpg",
-  "bio" => thea_profile["description"],
-  "followers" => thea_profile["followersCount"],
-  "following" => thea_profile["friendsCount"],
-  "posts" => thea_profile["statusesCount"],
-  "accountCreated" => thea_profile["createdAt"],
-  "identityRisk" => "High",
-  "identityNote" => "Locked entrant, but the public X account is extremely sparse; reconcile @thea_ai vs @AlphaHorizon",
+  "name" => thea_agent.fetch("name", "AlphaHorizon"),
+  "handle" => thea_agent.fetch("xHandle", "thea_ai"),
+  "displayName" => thea_profile["name"] || "THEA",
+  "avatar" => thea_agent["avatar"] || "https://pbs.twimg.com/profile_images/1979134071725760512/xNqDkVog_400x400.png",
+  "bio" => thea_agent["quote"] || "AlphaHorizon is a predictive intelligence model for reasoning and forecasting in environments with incomplete and evolving information.",
+  "followers" => thea_profile["followersCount"] || 18121,
+  "following" => thea_profile["friendsCount"] || 8,
+  "posts" => thea_profile["statusesCount"] || 92,
+  "accountCreated" => thea_profile["createdAt"] || "Mon Sep 23 18:50:04 +0000 2024",
+  "identityRisk" => "Low",
+  "identityNote" => "Official THEA account linked directly from the Arena agent profile",
   "selectionScore" => nil,
   "huRank" => nil,
   "previousHuRank" => nil,

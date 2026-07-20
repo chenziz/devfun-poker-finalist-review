@@ -58,7 +58,7 @@ export function PreferredEight() {
                 <div><span>Current HU rank</span><strong>{candidate.huRank ? `#${candidate.huRank}` : "—"}</strong><small>Best observed score {fmt(candidate.historicalPeakScore, 1)}</small></div>
                 <div><span>Tournament record</span><strong>{candidate.tournamentSeasons} seasons</strong><small>Best finish #{fmt(candidate.tournamentBestRank)} · latest #{fmt(candidate.tournamentLatestRank)}</small></div>
                 <div><span>Clip availability</span><strong>{candidate.contentGrade}</strong><small>{fmt(candidate.clipCandidateCount)} automated hand signals</small></div>
-                <div><span>Public account risk</span><strong className={`preferred-risk preferred-risk-${candidate.identityRisk.toLowerCase()}`}>{candidate.identityRisk}</strong><small>Builder linkage still unverified</small></div>
+                <div><span>Public account risk</span><strong className={`preferred-risk preferred-risk-${candidate.identityRisk.toLowerCase()}`}>{candidate.identityRisk}</strong><small>{candidate.handle === "thea_ai" ? "Arena identity confirmed" : "Builder linkage still unverified"}</small></div>
               </div>
 
               <div className="preferred-clips">

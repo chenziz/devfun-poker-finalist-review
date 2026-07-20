@@ -23,7 +23,7 @@ accent = {
 }
 
 players = selection.fetch("players").map.with_index do |player, index|
-  lookup = player.fetch("name") == "AlphaHorizon" ? "TheAAI / AlphaHorizon" : player.fetch("name")
+  lookup = player.fetch("name")
   candidate = profile_by_name.fetch(lookup)
   {
     "order" => index + 1,

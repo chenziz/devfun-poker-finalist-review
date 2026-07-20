@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run export:static",
+  "outputDirectory": "static-export",
+  "cleanUrls": true,
+  "trailingSlash": false
+}

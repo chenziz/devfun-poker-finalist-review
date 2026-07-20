@@ -1,8 +1,13 @@
-# vinext-starter
+# dev.fun Poker Finalist Review
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+Internal curation interface for reviewing the Arena Poker candidate pool,
+preferred finalists and replay highlights.
+
+- [Candidate data in Markdown](CANDIDATES.md)
+- [Candidate data used by the site](app/data/candidates.json)
+- [Preferred eight](app/data/preferred-eight.json)
+- [Finalist highlight packages](app/data/finalist-highlights.json)
+- [Live review site](https://devfun-poker-finalist-review.vercel.app/)
 
 ## Prerequisites
 
@@ -18,7 +23,20 @@ npm run build
 
 This starter does not use `wrangler.jsonc`.
 
-## Included Shape
+## Data workflow
+
+The website reads checked-in JSON snapshots under `app/data/`. Candidate data
+can be curated directly in `app/data/candidates.json`; regenerate the Markdown
+view with:
+
+```bash
+ruby scripts/build-candidates-markdown.rb
+```
+
+See [CANDIDATES.md](CANDIDATES.md) for the complete Arena candidate table,
+field definitions, source endpoints and replay links.
+
+## Project shape
 
 - edit site code under `app/`
 - `.openai/hosting.json` declares optional Sites D1 and R2 bindings

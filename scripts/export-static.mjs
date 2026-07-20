@@ -28,8 +28,8 @@ for (const pathname of routes) {
     ? resolve(output, "index.html")
     : resolve(output, pathname.slice(1), "index.html");
   await mkdir(dirname(destination), { recursive: true });
-  const html = (await response.text()).replaceAll(
-    `${root}/.vinext/fonts/`,
+  const html = (await response.text()).replace(
+    /\/(?:[^/\s"'()<>]+\/)*\.vinext\/fonts\//g,
     "/assets/_vinext_fonts/",
   );
   await writeFile(destination, html);
